@@ -1,0 +1,79 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.jvnet.hudson.hadoop</groupId>
+  <artifactId>hadoop-core</artifactId>
+  <packaging>jar</packaging>
+  <version>0.19.1-hudson-1</version>
+  <name>Hadoop Core</name>
+    
+  <distributionManagement>
+    <repository>
+      <id>java.net-m2-repository</id>
+      <url>java-net:/maven2-repository/trunk/repository/</url>
+    </repository>
+  </distributionManagement>
+
+  <build>
+    <plugins>
+      <!-- fake out maven and install the binary artifact -->
+      <plugin>
+        <groupId>org.jvnet.maven-antrun-extended-plugin</groupId>
+        <artifactId>maven-antrun-extended-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>run</goal>
+            </goals>
+            <configuration>
+              <tasks>
+                <untar src="hadoop-${project.version}.tar.gz" dest="target" compression="gzip" />
+                <attachArtifact file="target/hadoop-${project.version}/hadoop-${project.version}-core.jar" />
+                
+                <zip destfile="target/src.zip">
+                  <fileset dir="target/hadoop-${project.version}/src/core" />
+                  <fileset dir="target/hadoop-${project.version}/src/hdfs" />
+                  <fileset dir="target/hadoop-${project.version}/src/mapred" />
+                </zip>
+                
+                <attachArtifact file="target/src.zip" classifier="sources" type="jar"/>
+                <!--attachArtifact file="hadoop-${project.version}.tar.gz" classifier="bin" type="tar.gz"/-->
+
+                <tar destfile="target/mini.tgz" compression="gzip">
+                  <tarfileset dir="target/hadoop-${project.version}" includes="conf/,lib/,webapps/,*.txt,*.jar"
+                     excludes="*-examples.jar,*-test.jar" />
+                </tar>
+                <attachArtifact file="target/mini.tgz" classifier="mini-bin" type="tar.gz"/>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+    <extensions>
+      <extension>
+        <groupId>org.jvnet.wagon-svn</groupId>
+        <artifactId>wagon-svn</artifactId>
+        <version>1.9</version>
+      </extension>
+    </extensions>
+  </build>
+  
+  <repositories>
+    <repository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2/</url>
+    </repository>
+  </repositories>
+
+  <pluginRepositories>
+    <pluginRepository>
+      <id>maven2-repository.dev.java.net</id>
+      <name>Java.net Repository for Maven</name>
+      <url>http://download.java.net/maven/2/</url>
+    </pluginRepository>
+  </pluginRepositories>
+</project>
