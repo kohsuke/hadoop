@@ -172,7 +172,11 @@ public class DU extends Shell {
   }
 
   protected String[] getExecString() {
-    return new String[] {"du", "-sk", dirPath};
+    try {
+      return new String[] {"du", "-sk", FileUtil.makeShellPath(dirPath)};
+    } catch (IOException e) {
+      throw new RuntimeException(e); // hack: tunnel
+    }
   }
   
   protected void parseExecResult(BufferedReader lines) throws IOException {
