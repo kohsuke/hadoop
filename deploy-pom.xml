@@ -29,8 +29,8 @@
             </goals>
             <configuration>
               <tasks>
-                <property name="antver" version="0.19.2-dev" />
-                <ant dir="." target="clean tar" />
+                <property name="antver" value="0.19.2-dev" />
+                <exec command="ant clean tar" />
                 <attachArtifact file="build/hadoop-${antver}-core.jar" />
                 
                 <zip destfile="build/src.zip">
