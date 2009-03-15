@@ -30,7 +30,7 @@
             <configuration>
               <tasks>
                 <property name="antver" value="0.19.2-dev" />
-                <exec command="ant clean tar" />
+                <!--exec command="ant clean tar" /-->
                 <attachArtifact file="build/hadoop-${antver}-core.jar" />
                 
                 <zip destfile="build/src.zip">
@@ -42,8 +42,10 @@
                 <attachArtifact file="build/src.zip" classifier="sources" type="jar"/>
                 <!--attachArtifact file="hadoop-${project.version}.tar.gz" classifier="bin" type="tar.gz"/-->
 
+                <mkdir dir="build/tar" />
+                <untar src="build/hadoop-${antver}.tar.gz" dest="build/tar" compression="gzip"/>
                 <tar destfile="build/mini.tgz" compression="gzip">
-                  <tarfileset dir="build" includes="conf/,lib/,webapps/,*.txt,*.jar"
+                  <tarfileset dir="build/tar/hadoop-${antver}" includes="conf/,lib/,webapps/,*.txt,*.jar"
                      excludes="*-examples.jar,*-test.jar" />
                 </tar>
                 <attachArtifact file="build/mini.tgz" classifier="mini-bin" type="tar.gz"/>
