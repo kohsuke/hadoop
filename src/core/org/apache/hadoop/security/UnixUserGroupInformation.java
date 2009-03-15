@@ -302,10 +302,21 @@ public class UnixUserGroupInformation extends UserGroupInformation {
    * @throws IOException if encounter any error while running the command
    */
   static String getUnixUserName() throws IOException {
-    String[] result = executeShellCommand(
+    String[] result;
+    try {
+      result = executeShellCommand(
         new String[]{Shell.USER_NAME_COMMAND});
+    } catch (IOException e) {
+      try {
+        // in case this is on Solaris
+        result = executeShellCommand(
+          new String[]{"/usr/ucb/whoami"});
+      } catch (IOException _) {
+        throw e; // report the original problem
+      }
+    }
     if (result.length!=1) {
-      throw new IOException("Expect one token as the result of " + 
+      throw new IOException("Expect one token as the result of " +
           Shell.USER_NAME_COMMAND + ": " + toString(result));
     }
     return result[0];
