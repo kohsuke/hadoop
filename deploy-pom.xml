@@ -29,23 +29,24 @@
             </goals>
             <configuration>
               <tasks>
-                <untar src="hadoop-${project.version}.tar.gz" dest="target" compression="gzip" />
-                <attachArtifact file="target/hadoop-${project.version}/hadoop-${project.version}-core.jar" />
+                <property name="antver" version="0.19.2-dev" />
+                <ant dir="." target="clean tar" />
+                <attachArtifact file="build/hadoop-${antver}-core.jar" />
                 
-                <zip destfile="target/src.zip">
-                  <fileset dir="target/hadoop-${project.version}/src/core" />
-                  <fileset dir="target/hadoop-${project.version}/src/hdfs" />
-                  <fileset dir="target/hadoop-${project.version}/src/mapred" />
+                <zip destfile="build/src.zip">
+                  <fileset dir="src/core" />
+                  <fileset dir="src/hdfs" />
+                  <fileset dir="src/mapred" />
                 </zip>
                 
-                <attachArtifact file="target/src.zip" classifier="sources" type="jar"/>
+                <attachArtifact file="build/src.zip" classifier="sources" type="jar"/>
                 <!--attachArtifact file="hadoop-${project.version}.tar.gz" classifier="bin" type="tar.gz"/-->
 
-                <tar destfile="target/mini.tgz" compression="gzip">
-                  <tarfileset dir="target/hadoop-${project.version}" includes="conf/,lib/,webapps/,*.txt,*.jar"
+                <tar destfile="build/mini.tgz" compression="gzip">
+                  <tarfileset dir="build" includes="conf/,lib/,webapps/,*.txt,*.jar"
                      excludes="*-examples.jar,*-test.jar" />
                 </tar>
-                <attachArtifact file="target/mini.tgz" classifier="mini-bin" type="tar.gz"/>
+                <attachArtifact file="build/mini.tgz" classifier="mini-bin" type="tar.gz"/>
               </tasks>
             </configuration>
           </execution>
