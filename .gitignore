@@ -35,3 +35,4 @@ src/docs/cn/uming.conf
 *.ipr
 *.iws
 *.iml
+target
