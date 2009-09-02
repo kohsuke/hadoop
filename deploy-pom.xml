@@ -5,7 +5,7 @@
   <groupId>org.jvnet.hudson.hadoop</groupId>
   <artifactId>hadoop-core</artifactId>
   <packaging>jar</packaging>
-  <version>0.19.1-hudson-3</version>
+  <version>0.19.1-hudson-4</version>
   <name>Hadoop Core</name>
     
   <distributionManagement>
@@ -30,7 +30,7 @@
             <configuration>
               <tasks>
                 <property name="antver" value="0.19.2-dev" />
-                <!--exec command="ant clean tar" /-->
+                <exec command="ant clean tar" />
                 <attachArtifact file="build/hadoop-${antver}-core.jar" />
                 
                 <zip destfile="build/src.zip">

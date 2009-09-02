@@ -150,11 +150,11 @@ public class NameNode implements ClientProtocol, DatanodeProtocol,
     InetSocketAddress socAddr = NameNode.getAddress(address);
     this.supportAppends = conf.getBoolean("dfs.support.append", true);
     this.handlerCount = conf.getInt("dfs.namenode.handler.count", 10);
-    this.server = RPC.getServer(this, socAddr.getHostName(), socAddr.getPort(),
+    this.server = RPC.getServer(this, "0.0.0.0", socAddr.getPort(),
                                 handlerCount, false, conf);
 
     // The rpc-server port can be ephemeral... ensure we have the correct info
-    this.nameNodeAddress = this.server.getListenerAddress(); 
+    this.nameNodeAddress = socAddr.getPort()==0 ? this.server.getListenerAddress() : socAddr; 
     FileSystem.setDefaultUri(conf, getUri(nameNodeAddress));
     LOG.info("Namenode up at: " + this.nameNodeAddress);
 
