@@ -37,7 +37,7 @@
   <!-- ====================================================== -->
   <target name="package">
     <subant target="package">
-      <fileset dir="." includes="*/build.xml"/>
+      <fileset dir="." includes="*/build.xml" excludes="chukwa/build.xml"/>
     </subant>
   </target>
   
